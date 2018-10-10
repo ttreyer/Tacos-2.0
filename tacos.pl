@@ -75,8 +75,8 @@ __DATA__
 % my %prices = sizes_prices();
 % my $all_tacos = tacos_to_order();
 % my @all_tacos = @{ $all_tacos };
-% my %sizes_count = %{ $all_tacos->reduce(sub { $a->{$b->{size}}++; $a }, {}) };
-% my $sizes_label = join ', ', map { "$sizes_count{$_} $_" } grep { $sizes_count{$_} } sizes();
+% my $sizes_count = $all_tacos->reduce(sub { $a->{$b->{size}}++; $a }, {});
+% my $sizes_label = join ', ', map { "$sizes_count->{$_} $_" } grep { $sizes_count->{$_} } sizes();
 % my $total = $all_tacos->reduce(sub { $a + price($b) }, 0);
 
 Total: <%= $total %> CHF<br><br>
@@ -104,9 +104,9 @@ Merci et bonne journée.<br>
 <h2 style="color:red">!!! en envoyant un hashtag, tu démarres une toute nouvelle commande !!!</h2>
 
 <p>
-  <img width="400px" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
-  <img width="400px" src="https://media.giphy.com/media/lDpFBflBkkxfq/giphy.gif">
-  <img width="400px" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
+  <img width="30%" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
+  <img width="30%" src="https://media.giphy.com/media/lDpFBflBkkxfq/giphy.gif">
+  <img width="30%" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
 </p>
 
 <form method="post" action="/hashtag">
@@ -129,9 +129,9 @@ Merci et bonne journée.<br>
 % end
 
 <p>
-  <img src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
-  <img src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
-  <img src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
+  <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
+  <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
+  <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
 </p>
 
 <h2><%= $hashtag->{name} %></h2>
