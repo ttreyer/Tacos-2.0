@@ -3,7 +3,7 @@ use Mojo::SQLite;
 
 helper sizes => sub { 'M', 'L', 'L Mixte', 'XL', 'XXL', 'Giga' };
 helper sizes_prices => sub { (M => 7, L => 8, 'L Mixte' => 9, XL => 15, XXL => 23, Giga => 31) };
-helper sizes_max_meat => sub { (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 4, Giga => 5) };
+helper sizes_max_meat => sub { my %max = (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 4, Giga => 5); $max{ $_[1] } };
 helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
 helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
 helper sauces => sub { 'Fromagère', 'Ketchup', 'Mayonnaise', 'Cocktail', 'Blanche', 'Barbecue', 'Américaine', 'Biggy burger', 'Tartare', 'Curry', 'Andalouse', 'Algérienne', 'Marocaine', 'Harissa', 'Samouraï', 'Poivre' };
@@ -11,12 +11,7 @@ helper price => sub { my %prices = shift->sizes_prices; $prices{ shift() } };
 
 helper sqlite => sub { state $sqlite = Mojo::SQLite->new('sqlite:tacos.db') };
 helper hashtag => sub { shift->sqlite->db->select('hashtags', undef, undef, { -desc => 'id' })->hash };
-helper tacos_to_order => sub {
-  my $app = shift;
-  my $hashtag_id = $app->hashtag->{id};
-  my $all_tacos = $app->sqlite->db->select('tacos', undef, { hashtag_id => $hashtag_id })->hashes;
-  return $all_tacos;
-};
+helper tacos_to_order => sub { $_[0]->sqlite->db->select('tacos', undef, { hashtag_id => $_[0]->hashtag->{id} })->hashes };
 
 app->sqlite->migrations->name('tacos')->from_string(<<SQL)->migrate;
 -- 1 up
@@ -40,8 +35,13 @@ post '/' => sub {
     sauce => join(', ', @{ $c->every_param('sauce') }),
   };
 
-  $c->sqlite->db->insert('tacos', $tacos);
-  return $c->render('form', message => 'Tacos ajouté!');
+  my $max_meat_count = $c->sizes_max_meat($tacos->{size});
+  my $message = "Il faut prendre $max_meat_count viandes avec cette taille!";
+  if (@{ $c->every_param('meat') } == $max_meat_count) {
+    $message = 'Tacos ajouté!';
+    $c->sqlite->db->insert('tacos', $tacos);
+  }
+  return $c->render('form', message => $message);
 };
 get '/hashtag' => 'hashtag';
 post '/hashtag' => sub {
