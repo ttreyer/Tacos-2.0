@@ -90,8 +90,8 @@ Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :<br>
 *Sauce* : <%= $tacos->{sauce} %><br>
 % }
 =============================================<br>
-Livraison à l'arrêt M1 EPFL.<br>
-À 11h30.<br>
+Livraison à <span contenteditable="true">l'arrêt M1 EPFL</span>.<br>
+À <span contenteditable="true">11h30</span>.<br>
 Merci et bonne journée.<br>
 
 @@ hashtag.html.ep
