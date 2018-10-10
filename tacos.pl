@@ -80,19 +80,19 @@ Total: <%= $total %> CHF<br><br>
 % }
 <hr>
 
-Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :<br>
-<%= $sizes_label %>.<br>
+<textarea cols="100" rows="20">Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :
+<%= $sizes_label %>.
 % foreach my $tacos (@all_tacos) {
-=============================================<br>
-*<%= $tacos->{size} %>* :<br>
-*Viande* : <%= $tacos->{meat} %><br>
-*Garniture* : <%= $tacos->{garnish} %> <br>
-*Sauce* : <%= $tacos->{sauce} %><br>
+=============================================
+*<%= $tacos->{size} %>* :
+*Viande* : <%= $tacos->{meat} %>
+*Garniture* : <%= $tacos->{garnish} %>
+*Sauce* : <%= $tacos->{sauce} %>
 % }
-=============================================<br>
-Livraison à <span contenteditable="true">l'arrêt M1 EPFL</span>.<br>
-À <span contenteditable="true">11h30</span>.<br>
-Merci et bonne journée.<br>
+=============================================
+Livraison à l'arrêt M1 EPFL.
+À 11h30.
+Merci et bonne journée.</textarea>
 
 @@ hashtag.html.ep
 % layout 'main';
