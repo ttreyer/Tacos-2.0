@@ -5,6 +5,13 @@ use v5.18;
 use Mojolicious::Lite;
 use Mojo::SQLite;
 
+helper sizes => sub { 'M', 'L', 'L Mixte', 'XL', 'XXL', 'Giga' };
+helper sizes_prices => sub { (M => 7, L => 8, 'L Mixte' => 9, XL => 15, XXL => 23, Giga => 31) };
+helper sizes_max_meat => sub { (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 4, Giga => 5) };
+helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
+helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
+helper sauces => sub { 'Fromagère', 'Ketchup', 'Mayonnaise', 'Cocktail', 'Blanche', 'Barbecue', 'Américaine', 'Biggy burger', 'Tartare', 'Curry', 'Andalouse', 'Algérienne', 'Marocaine', 'Harissa', 'Samouraï', 'Poivre' };
+
 helper sqlite => sub { state $sqlite = Mojo::SQLite->new('sqlite:tacos.db') };
 helper hashtag => sub { shift->sqlite->db->select('hashtags', undef, undef, { -desc => 'id' })->hash };
 helper tacos_to_order => sub {
@@ -123,70 +130,52 @@ Merci et bonne journée.<br>
 
 <h2><%= $hashtag->{name} %></h2>
 
-<form method="post" action="/">
+%= form_for '/' => (method => 'POST') => begin
   <p>
-    <label for="name">Say your name:</label>
-    <input type="text" name="name" id="name">
+    %= label_for 'name' => 'Say your name:'
+    %= text_field 'name', id => 'name'
   </p>
   <p>
     Taille:
 
-    <label for="M">M (7.-)</label> <input type="radio" id="M" name="size" value="M"> |
-    <label for="L">L (8.-)</label> <input type="radio" id="L" name="size" value="L"> |
-    <label for="L Mixte">L Mixte (9.-)</label> <input type="radio" id="L Mixte" name="size" value="L Mixte"> |
-    <label for="XL">XL (15.-)</label> <input type="radio" id="XL" name="size" value="XL"> |
-    <label for="XXL">XXL (23.-)</label> <input type="radio" id="XXL" name="size" value="XXL"> |
-    <label for="Giga">GIGA (31.-)</label> <input type="radio" id="Giga" name="size" value="Giga">
+    % my %prices = sizes_prices();
+    % foreach my $size (sizes()) {
+      %= label_for $size => "$size ($prices{$size}.-)"
+      %= radio_button size => $size, id => $size
+      |
+    % }
   </p>
   <p>
     Viandes:
 
-    <label for="Viande hachée">Viande hachée</label> <input type="checkbox" id="Viande hachée" name="meat" value="Viande hachée"> |
-    <label for="Escalope de poulet">Escalope de poulet</label> <input type="checkbox" id="Escalope de poulet" name="meat" value="Escalope de poulet"> |
-    <label for="Cordon bleu">Cordon bleu</label> <input type="checkbox" id="Cordon bleu" name="meat" value="Cordon bleu"> |
-    <label for="Merguez">Merguez</label> <input type="checkbox" id="Merguez" name="meat" value="Merguez"> |
-    <label for="Nuggets">Nuggets</label> <input type="checkbox" id="Nuggets" name="meat" value="Nuggets"> |
-    <label for="Kebab">Kebab</label> <input type="checkbox" id="Kebab" name="meat" value="Kebab"> |
-    <label for="Soudjouk">Soudjouk</label> <input type="checkbox" id="Soudjouk" name="meat" value="Soudjouk"> |
-    <label for="Végétarien">Végétarien</label> <input type="checkbox" id="Végétarien" name="meat" value="Végétarien">
+    % foreach my $meat (meats()) {
+      %= label_for $meat => $meat
+      %= check_box meat => $meat, id => $meat
+      |
+    % }
   </p>
   <p>
     Garnitures:
 
-    <label for="Frites">Frites</label> <input type="checkbox" id="Frites" name="garnish" value="Frites"> |
-    <label for="Cheddar">Cheddar</label> <input type="checkbox" id="Cheddar" name="garnish" value="Cheddar"> |
-    <label for="Gruyere">Gruyère</label> <input type="checkbox" id="Gruyere" name="garnish" value="Gruyere"> |
-    <label for="Salade">Salade</label> <input type="checkbox" id="Salade" name="garnish" value="Salade"> |
-    <label for="Tomate">Tomate</label> <input type="checkbox" id="Tomate" name="garnish" value="Tomate"> |
-    <label for="Oignons">Oignons</label> <input type="checkbox" id="Oignons" name="garnish" value="Oignons"> |
-    <label for="Carottes">Carottes</label> <input type="checkbox" id="Carottes" name="garnish" value="Carottes"> |
-    <label for="Cornichons">Cornichons</label> <input type="checkbox" id="Cornichons" name="garnish" value="Cornichons">
+    % foreach my $garnish (garnishes()) {
+      %= label_for $garnish => $garnish
+      %= check_box garnish => $garnish, id => $garnish
+      |
+    % }
   </p>
 
   <p>
     Sauces:
 
-    <label for="Fromagère">Fromagère</label> <input type="checkbox" id="Fromagère" name="sauce" value="Fromagère"> |
-    <label for="Ketchup">Ketchup</label> <input type="checkbox" id="Ketchup" name="sauce" value="Ketchup"> |
-    <label for="Mayonnaise">Mayonnaise</label> <input type="checkbox" id="Mayonnaise" name="sauce" value="Mayonnaise"> |
-    <label for="Cocktail">Cocktail</label> <input type="checkbox" id="Cocktail" name="sauce" value="Cocktail"> |
-    <label for="Blanche">Blanche</label> <input type="checkbox" id="Blanche" name="sauce" value="Blanche"> |
-    <label for="Barbecue">Barbecue</label> <input type="checkbox" id="Barbecue" name="sauce" value="Barbecue"> |
-    <label for="Américaine">Américaine</label> <input type="checkbox" id="Américaine" name="sauce" value="Américaine"> |
-    <label for="Biggy Burger">Biggy Burger</label> <input type="checkbox" id="Biggy Burger" name="sauce" value="Biggy Burger"> |
-    <label for="Tartare">Tartare</label> <input type="checkbox" id="Tartare" name="sauce" value="Tartare"> |
-    <label for="Curry">Curry</label> <input type="checkbox" id="Curry" name="sauce" value="Curry"> |
-    <label for="Cheezy">Cheezy</label> <input type="checkbox" id="Cheezy" name="sauce" value="Cheezy"> |
-    <label for="Andalouse">Andalouse</label> <input type="checkbox" id="Andalouse" name="sauce" value="Andalouse"> |
-    <label for="Algérienne">Algérienne</label> <input type="checkbox" id="Algérienne" name="sauce" value="Algérienne"> |
-    <label for="Marocaine">Marocaine</label> <input type="checkbox" id="Marocaine" name="sauce" value="Marocaine"> |
-    <label for="Harissa">Harissa</label> <input type="checkbox" id="Harissa" name="sauce" value="Harissa"> |
-    <label for="Samouraï">Samouraï</label> <input type="checkbox" id="Samouraï" name="sauce" value="Samouraï"> |
-    <label for="Poivre">Poivre</label> <input type="checkbox" id="Poivre" name="sauce" value="Poivre">
+    % foreach my $sauce (sauces()) {
+      %= label_for $sauce => $sauce
+      %= check_box sauce => $sauce, id => $sauce
+      |
+    % }
   </p>
 
-  <input type="submit" value="ORDER MY TACOS">
-</form>
+  %= submit_button 'ORDER MY TACOS'
+% end
 
 % foreach my $tacos (@{ tacos_to_order() }) {
 <hr/>
