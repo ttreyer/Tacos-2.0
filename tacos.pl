@@ -1,7 +1,3 @@
-use strict;
-use warnings;
-use v5.18;
-
 use Mojolicious::Lite;
 use Mojo::SQLite;
 
