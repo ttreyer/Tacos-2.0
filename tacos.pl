@@ -7,7 +7,7 @@ helper sizes_max_meat => sub { (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 
 helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
 helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
 helper sauces => sub { 'Fromagère', 'Ketchup', 'Mayonnaise', 'Cocktail', 'Blanche', 'Barbecue', 'Américaine', 'Biggy burger', 'Tartare', 'Curry', 'Andalouse', 'Algérienne', 'Marocaine', 'Harissa', 'Samouraï', 'Poivre' };
-helper price => sub { my %prices = shift->sizes_prices; $prices{ shift() } };
+helper price => sub { my %prices = shift->sizes_prices; $prices{ shift->{size} } };
 
 helper sqlite => sub { state $sqlite = Mojo::SQLite->new('sqlite:tacos.db') };
 helper hashtag => sub { shift->sqlite->db->select('hashtags', undef, undef, { -desc => 'id' })->hash };
@@ -46,7 +46,9 @@ post '/' => sub {
 get '/hashtag' => 'hashtag';
 post '/hashtag' => sub {
   my $c = shift;
-  $c->sqlite->db->insert('hashtags', { name => $c->param('hashtag') });
+  my $new_hashtag = $c->param('hashtag');
+
+  $c->sqlite->db->insert('hashtags', { name => $new_hashtag });
   return $c->render('hashtag', message => 'Nouvelle commande!');
 };
 
@@ -66,20 +68,33 @@ app->start;
 __DATA__
 
 @@ whatsapp.html.ep
-% layout 'main';
 % my %prices = sizes_prices();
 % my $all_tacos = tacos_to_order();
 % my @all_tacos = @{ $all_tacos };
 % my $sizes_count = $all_tacos->reduce(sub { $a->{$b->{size}}++; $a }, {});
 % my $sizes_label = join ', ', map { "$sizes_count->{$_} $_" } grep { $sizes_count->{$_} } sizes();
-% my $total = $all_tacos->reduce(sub { $a + price($b->{size}) }, 0);
+% my $total = $all_tacos->reduce(sub { $a + price($b) }, 0);
 
 Total: <%= $total %> CHF<br><br>
 % foreach my $tacos (@all_tacos) {
-  <%= $tacos->{name} %>: <%= price($tacos->{size}) %>.-<br>
+  <%= $tacos->{name} %>: <%= price($tacos) %>.-<br>
 % }
 <hr>
-
+<script type="text/javascript">
+  function cpCMD(){
+    var cmd = document.getElementById("zeComande");
+    var area = document.getElementById("temp");
+    area.style.display = "";
+    area.innerHTML = cmd.textContent ;
+    area.select();
+    /* Copy the text inside the text field */
+    document.execCommand("copy");
+     area.style.display = "none";
+  }
+</script>
+<button onclick="cpCMD()" > Copier Commande </button>
+<textarea id="temp" style="display: none;"></textarea>
+<div id="zeComande">
 Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :<br>
 <%= $sizes_label %>.<br>
 % foreach my $tacos (@all_tacos) {
@@ -93,7 +108,7 @@ Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :<br>
 Livraison à l'arrêt M1 EPFL.<br>
 À 11h30.<br>
 Merci et bonne journée.<br>
-
+</div>
 @@ hashtag.html.ep
 % layout 'main';
 <h2 style="color:red">!!! en envoyant un hashtag, tu démarres une toute nouvelle commande !!!</h2>
@@ -134,14 +149,15 @@ Merci et bonne journée.<br>
 %= form_for '/' => (method => 'POST') => begin
   <p>
     %= label_for 'name' => 'Say your name:'
-    %= text_field 'name', id => 'name', required => 'required', autofocus => 'autofocus'
+    %= text_field 'name', id => 'name'
   </p>
   <p>
     Taille:
 
+    % my %prices = sizes_prices();
     % foreach my $size (sizes()) {
-      %= label_for $size => "$size (" . price($size) . ".-)"
-      %= radio_button size => $size, id => $size, required => 'required'
+      %= label_for $size => "$size ($prices{$size}.-)"
+      %= radio_button size => $size, id => $size
       |
     % }
   </p>
@@ -179,7 +195,7 @@ Merci et bonne journée.<br>
 
 % foreach my $tacos (@{ tacos_to_order() }) {
 <hr/>
-%= $print_tacos->($tacos)
+<%== $print_tacos->($tacos) %>
 % }
 
 @@ layouts/main.html.ep
@@ -193,8 +209,5 @@ Merci et bonne journée.<br>
     <h1>Mmmh TACOS</h1>
     <%== ($message) ? "<h2>$message</h2>" : undef %>
     <%= content %>
-    <p>
-      <a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a>
-    </p>
   </body>
 </html>
