@@ -134,14 +134,14 @@ Merci et bonne journée.<br>
 %= form_for '/' => (method => 'POST') => begin
   <p>
     %= label_for 'name' => 'Say your name:'
-    %= text_field 'name', id => 'name'
+    %= text_field 'name', id => 'name', required => 'required', autofocus => 'autofocus'
   </p>
   <p>
     Taille:
 
     % foreach my $size (sizes()) {
       %= label_for $size => "$size (" . price($size) . ".-)"
-      %= radio_button size => $size, id => $size
+      %= radio_button size => $size, id => $size, required => 'required'
       |
     % }
   </p>
