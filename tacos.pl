@@ -56,10 +56,35 @@ get '/delete/:tacos_id' => sub {
   return $c->redirect_to('/');
 };
 
+get '/whatsapp' => 'whatsapp';
+
 app->defaults('message' => undef);
 app->start;
 
 __DATA__
+
+@@ whatsapp.html.ep
+% my @all_tacos = @{ tacos_to_order() };
+% my %sizes_count = ();
+% foreach my $tacos (@all_tacos) { $sizes_count{ $tacos->{size} }++ }
+% my $tacos_count = '';
+% my @sizes_label = ();
+% foreach my $size (keys %sizes_count) { push @sizes_label, "$sizes_count{$size} $size" }
+% my $sizes_label = join ', ', @sizes_label;
+
+Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :<br>
+<%= $sizes_label %>.<br>
+% foreach my $tacos (@all_tacos) {
+=============================================<br>
+*<%= $tacos->{size} %>* :<br>
+*Viande* : <%= $tacos->{meat} %><br>
+*Garniture* : <%= $tacos->{garnish} %> <br>
+*Sauce* : <%= $tacos->{sauce} %><br>
+% }
+=============================================<br>
+Livraison à l'arrêt M1 EPFL.<br>
+À 11h30.<br>
+Merci et bonne journée.<br>
 
 @@ hashtag.html.ep
 % layout 'main';
@@ -111,7 +136,7 @@ __DATA__
     <label for="L Mixte">L Mixte (9.-)</label> <input type="radio" id="L Mixte" name="size" value="L Mixte"> |
     <label for="XL">XL (15.-)</label> <input type="radio" id="XL" name="size" value="XL"> |
     <label for="XXL">XXL (23.-)</label> <input type="radio" id="XXL" name="size" value="XXL"> |
-    <label for="Giga">GIGA (7.-)</label> <input type="radio" id="Giga" name="size" value="Giga">
+    <label for="Giga">GIGA (31.-)</label> <input type="radio" id="Giga" name="size" value="Giga">
   </p>
   <p>
     Viandes:
