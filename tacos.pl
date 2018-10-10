@@ -11,6 +11,7 @@ helper sizes_max_meat => sub { (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 
 helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
 helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
 helper sauces => sub { 'Fromagère', 'Ketchup', 'Mayonnaise', 'Cocktail', 'Blanche', 'Barbecue', 'Américaine', 'Biggy burger', 'Tartare', 'Curry', 'Andalouse', 'Algérienne', 'Marocaine', 'Harissa', 'Samouraï', 'Poivre' };
+helper price => sub { my %prices = shift->sizes_prices; $prices{ shift->{size} } };
 
 helper sqlite => sub { state $sqlite = Mojo::SQLite->new('sqlite:tacos.db') };
 helper hashtag => sub { shift->sqlite->db->select('hashtags', undef, undef, { -desc => 'id' })->hash };
@@ -71,13 +72,18 @@ app->start;
 __DATA__
 
 @@ whatsapp.html.ep
-% my @all_tacos = @{ tacos_to_order() };
-% my %sizes_count = ();
-% foreach my $tacos (@all_tacos) { $sizes_count{ $tacos->{size} }++ }
-% my $tacos_count = '';
-% my @sizes_label = ();
-% foreach my $size (keys %sizes_count) { push @sizes_label, "$sizes_count{$size} $size" }
-% my $sizes_label = join ', ', @sizes_label;
+% my %prices = sizes_prices();
+% my $all_tacos = tacos_to_order();
+% my @all_tacos = @{ $all_tacos };
+% my %sizes_count = %{ $all_tacos->reduce(sub { $a->{$b->{size}}++; $a }, {}) };
+% my $sizes_label = join ', ', map { "$sizes_count{$_} $_" } grep { $sizes_count{$_} } sizes();
+% my $total = $all_tacos->reduce(sub { $a + price($b) }, 0);
+
+Total: <%= $total %> CHF<br><br>
+% foreach my $tacos (@all_tacos) {
+  <%= $tacos->{name} %>: <%= price($tacos) %>.-<br>
+% }
+<hr>
 
 Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :<br>
 <%= $sizes_label %>.<br>
