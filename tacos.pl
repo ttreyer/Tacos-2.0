@@ -7,7 +7,7 @@ helper sizes_max_meat => sub { (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 
 helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
 helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
 helper sauces => sub { 'Fromagère', 'Ketchup', 'Mayonnaise', 'Cocktail', 'Blanche', 'Barbecue', 'Américaine', 'Biggy burger', 'Tartare', 'Curry', 'Andalouse', 'Algérienne', 'Marocaine', 'Harissa', 'Samouraï', 'Poivre' };
-helper price => sub { my %prices = shift->sizes_prices; $prices{ shift->{size} } };
+helper price => sub { my %prices = shift->sizes_prices; $prices{ shift() } };
 
 helper sqlite => sub { state $sqlite = Mojo::SQLite->new('sqlite:tacos.db') };
 helper hashtag => sub { shift->sqlite->db->select('hashtags', undef, undef, { -desc => 'id' })->hash };
@@ -46,9 +46,7 @@ post '/' => sub {
 get '/hashtag' => 'hashtag';
 post '/hashtag' => sub {
   my $c = shift;
-  my $new_hashtag = $c->param('hashtag');
-
-  $c->sqlite->db->insert('hashtags', { name => $new_hashtag });
+  $c->sqlite->db->insert('hashtags', { name => $c->param('hashtag') });
   return $c->render('hashtag', message => 'Nouvelle commande!');
 };
 
@@ -68,16 +66,17 @@ app->start;
 __DATA__
 
 @@ whatsapp.html.ep
+% layout 'main';
 % my %prices = sizes_prices();
 % my $all_tacos = tacos_to_order();
 % my @all_tacos = @{ $all_tacos };
 % my $sizes_count = $all_tacos->reduce(sub { $a->{$b->{size}}++; $a }, {});
 % my $sizes_label = join ', ', map { "$sizes_count->{$_} $_" } grep { $sizes_count->{$_} } sizes();
-% my $total = $all_tacos->reduce(sub { $a + price($b) }, 0);
+% my $total = $all_tacos->reduce(sub { $a + price($b->{size}) }, 0);
 
 Total: <%= $total %> CHF<br><br>
 % foreach my $tacos (@all_tacos) {
-  <%= $tacos->{name} %>: <%= price($tacos) %>.-<br>
+  <%= $tacos->{name} %>: <%= price($tacos->{size}) %>.-<br>
 % }
 <hr>
 
@@ -140,9 +139,8 @@ Merci et bonne journée.<br>
   <p>
     Taille:
 
-    % my %prices = sizes_prices();
     % foreach my $size (sizes()) {
-      %= label_for $size => "$size ($prices{$size}.-)"
+      %= label_for $size => "$size (" . price($size) . ".-)"
       %= radio_button size => $size, id => $size
       |
     % }
@@ -181,7 +179,7 @@ Merci et bonne journée.<br>
 
 % foreach my $tacos (@{ tacos_to_order() }) {
 <hr/>
-<%== $print_tacos->($tacos) %>
+%= $print_tacos->($tacos)
 % }
 
 @@ layouts/main.html.ep
@@ -195,5 +193,8 @@ Merci et bonne journée.<br>
     <h1>Mmmh TACOS</h1>
     <%== ($message) ? "<h2>$message</h2>" : undef %>
     <%= content %>
+    <p>
+      <a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a>
+    </p>
   </body>
 </html>
