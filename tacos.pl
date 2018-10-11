@@ -74,11 +74,12 @@ __DATA__
 % my $sizes_label = join ', ', map { "$sizes_count->{$_} $_" } grep { $sizes_count->{$_} } sizes();
 % my $total = $all_tacos->reduce(sub { $a + price($b->{size}) }, 0);
 
-Total: <%= $total %> CHF<br><br>
+<textarea cols="100" rows="10">Total: <%= $total %> CHF
+
 % foreach my $tacos (@all_tacos) {
-  <%= $tacos->{name} %>: <%= price($tacos->{size}) %>.-<br>
+<%= $tacos->{name} %>: <%= price($tacos->{size}) %>.-
 % }
-<hr>
+</textarea><hr>
 
 <textarea cols="100" rows="20">Bonjour, j'aimerais commander <%= scalar @all_tacos %> tacos :
 <%= $sizes_label %>.
@@ -193,8 +194,6 @@ Merci et bonne journée.</textarea>
     <h1>Mmmh TACOS</h1>
     <%== ($message) ? "<h2>$message</h2>" : undef %>
     <%= content %>
-    <p>
-      <a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a>
-    </p>
+    <p><a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a></p>
   </body>
 </html>
