@@ -141,7 +141,7 @@ Merci et bonne journée.</textarea>
     Taille:
 
     % foreach my $size (sizes()) {
-      %= label_for $size => "$size (" . price($size) . ".-)"
+      %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
       %= radio_button size => $size, id => $size, required => 'required'
       |
     % }
