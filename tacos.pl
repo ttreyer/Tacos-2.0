@@ -137,41 +137,45 @@ Merci et bonne journée.</textarea>
     %= label_for 'name' => 'Say your name:'
     %= text_field 'name', id => 'name', required => 'required', autofocus => 'autofocus'
   </p>
-  <p>
+  <p class="sizes">
     Taille:
 
     % foreach my $size (sizes()) {
+      <span id="<%=$size%>" class="size tacosButton">
       %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
       %= radio_button size => $size, id => $size, required => 'required'
-      |
+      </span>
     % }
   </p>
-  <p>
+  <p class="meats">
     Viandes:
 
     % foreach my $meat (meats()) {
+      <span id="<%=$meat%>" class="meat tacosButton">
       %= label_for $meat => $meat
       %= check_box meat => $meat, id => $meat
-      |
+      </span>
     % }
   </p>
-  <p>
+  <p class="garnishes">
     Garnitures:
 
     % foreach my $garnish (garnishes()) {
+      <span id="<%=$garnish%>" class="garnish tacosButton">
       %= label_for $garnish => $garnish
       %= check_box garnish => $garnish, id => $garnish
-      |
+      </span>
     % }
   </p>
 
-  <p>
+  <p class="sauces">
     Sauces:
 
     % foreach my $sauce (sauces()) {
+    <span id="<%=$sauce%>" class="sauce tacosButton">
       %= label_for $sauce => $sauce
       %= check_box sauce => $sauce, id => $sauce
-      |
+      </span>
     % }
   </p>
 
