@@ -37,7 +37,7 @@ post '/' => sub {
 
   my $max_meat_count = $c->sizes_max_meat($tacos->{size});
   my $message = "Il faut prendre $max_meat_count viandes avec cette taille!";
-  if (@{ $c->every_param('meat') } == $max_meat_count) {
+  if (@{ $c->every_param('meat') } <= $max_meat_count) {
     $message = 'Tacos ajouté!';
     $c->sqlite->db->insert('tacos', $tacos);
   }
