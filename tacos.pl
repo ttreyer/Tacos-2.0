@@ -192,6 +192,7 @@ Merci et bonne journée.</textarea>
 <html>
   <head>
     <title>Enforced modularity for TACOS</title>
+	<link type="text/css" rel="stylesheet" href="tacos.css"/>	
     <meta charset="utf-8">
   </head>
   <body>
