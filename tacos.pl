@@ -114,15 +114,6 @@ Merci et bonne journée.</textarea>
 @@ form.html.ep
 % layout 'main';
 % my $hashtag = hashtag();
-% my $print_tacos = begin
-  % my $tacos = shift;
-  Pour <%= $tacos->{name} %><br>
-  Size <%= $tacos->{size} %><br>
-  [<%= $tacos->{meat} %>],<br>
-  [<%= $tacos->{garnish} %>],<br>
-  [<%= $tacos->{sauce} %>]<br>
-  <a href="/delete/<%= $tacos->{id} %>" style="color:red">Supprimer ce tacos</a>
-% end
 
 <p>
   <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
@@ -184,8 +175,19 @@ Merci et bonne journée.</textarea>
 
 % foreach my $tacos (@{ tacos_to_order() }) {
 <hr/>
-%= $print_tacos->($tacos)
+Pour <%= $tacos->{name} %><br>
+Size <%= $tacos->{size} %><br>
+[<%= $tacos->{meat} %>],<br>
+[<%= $tacos->{garnish} %>],<br>
+[<%= $tacos->{sauce} %>]<br>
+<a href="/delete/<%= $tacos->{id} %>" style="color:red">Supprimer ce tacos</a>
 % }
+
+<script>
+let name = document.querySelector('#name')
+name.addEventListener('keyup', () => localStorage.name = name.value)
+name.value = localStorage.name || ''
+</script>
 
 @@ layouts/main.html.ep
 <!DOCTYPE html>
