@@ -132,9 +132,9 @@ Merci et bonne journée.</textarea>
     Taille:
 
     % foreach my $size (sizes()) {
-      <span id="<%=$size%>" class="size tacosButton">
-      %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
-      %= radio_button size => $size, id => $size, required => 'required'
+      <span id="span-<%=$size%>" class="size tacosButton">
+        %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
+        %= radio_button size => $size, id => $size, required => 'required'
       </span>
     % }
   </p>
@@ -142,9 +142,9 @@ Merci et bonne journée.</textarea>
     Viandes:
 
     % foreach my $meat (meats()) {
-      <span id="<%=$meat%>" class="meat tacosButton">
-      %= label_for $meat => $meat
-      %= check_box meat => $meat, id => $meat
+      <span id="span-<%=$meat%>" class="meat tacosButton">
+        %= label_for $meat => $meat
+        %= check_box meat => $meat, id => $meat
       </span>
     % }
   </p>
@@ -152,9 +152,9 @@ Merci et bonne journée.</textarea>
     Garnitures:
 
     % foreach my $garnish (garnishes()) {
-      <span id="<%=$garnish%>" class="garnish tacosButton">
-      %= label_for $garnish => $garnish
-      %= check_box garnish => $garnish, id => $garnish
+      <span id="span-<%=$garnish%>" class="garnish tacosButton">
+        %= label_for $garnish => $garnish
+        %= check_box garnish => $garnish, id => $garnish
       </span>
     % }
   </p>
@@ -163,9 +163,9 @@ Merci et bonne journée.</textarea>
     Sauces:
 
     % foreach my $sauce (sauces()) {
-    <span id="<%=$sauce%>" class="sauce tacosButton">
-      %= label_for $sauce => $sauce
-      %= check_box sauce => $sauce, id => $sauce
+    <span id="span-<%=$sauce%>" class="sauce tacosButton">
+        %= label_for $sauce => $sauce
+        %= check_box sauce => $sauce, id => $sauce
       </span>
     % }
   </p>
