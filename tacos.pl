@@ -133,8 +133,8 @@ Merci et bonne journée.</textarea>
 
     % foreach my $size (sizes()) {
       <span id="span-<%=$size%>" class="size tacosButton">
-        %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
         %= radio_button size => $size, id => $size, required => 'required'
+        %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
       </span>
     % }
   </p>
@@ -143,8 +143,8 @@ Merci et bonne journée.</textarea>
 
     % foreach my $meat (meats()) {
       <span id="span-<%=$meat%>" class="meat tacosButton">
-        %= label_for $meat => $meat
         %= check_box meat => $meat, id => $meat
+        %= label_for $meat => $meat
       </span>
     % }
   </p>
@@ -153,8 +153,8 @@ Merci et bonne journée.</textarea>
 
     % foreach my $garnish (garnishes()) {
       <span id="span-<%=$garnish%>" class="garnish tacosButton">
-        %= label_for $garnish => $garnish
         %= check_box garnish => $garnish, id => $garnish
+        %= label_for $garnish => $garnish
       </span>
     % }
   </p>
@@ -164,8 +164,8 @@ Merci et bonne journée.</textarea>
 
     % foreach my $sauce (sauces()) {
     <span id="span-<%=$sauce%>" class="sauce tacosButton">
-        %= label_for $sauce => $sauce
         %= check_box sauce => $sauce, id => $sauce
+        %= label_for $sauce => $sauce
       </span>
     % }
   </p>
