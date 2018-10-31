@@ -135,6 +135,7 @@ Merci et bonne journée.</textarea>
       <span id="span-<%=$size%>" class="size tacosButton">
         %= label_for $size => "$size (" . sizes_max_meat($size) . " viandes, " . price($size) . ".-)"
         %= radio_button size => $size, id => $size, required => 'required'
+        <span class="meatball"></span>
       </span>
     % }
   </p>

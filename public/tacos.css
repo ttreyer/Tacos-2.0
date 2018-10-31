@@ -10,7 +10,39 @@ form p { line-height: 1.75em; }
 .tacosButton.size {
     background-color: #dedede;
     font-weight: bold;
+    padding-right: 2.25em;
 }
+.size input { display: none; }
+.size input + .meatball {
+    background-image: url(disabled.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    /* Need to be absolute to keep the container the same size */
+    position: absolute;
+    right: -0.2em;
+    bottom: 2px;
+
+    font-size: 2em;
+    width: 1em;
+    height: 0.6em;
+
+    filter: drop-shadow(0em 0em #0006);
+    transition-property: right, height, filter;
+    transition-duration: 200ms;
+}
+.size input:checked + .meatball {
+    background-image: url(enabled.svg);
+
+    height: 0.8em;
+    right: 0;
+    bottom: 2px;
+
+    filter: drop-shadow(0.1em 0.1em #0006);
+    transition-timing-function: cubic-bezier(.33,.71,0,3.2);
+    transition-duration: 200ms;
+}
+
 .meat.tacosButton.meat { background-color: #ffa7a7; }
 .garnish.tacosButton.garnish { background-color: #c5e9ba; }
 .sauce.tacosButton.sauce { background-color: #f3df98; }
