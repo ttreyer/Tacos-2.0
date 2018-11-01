@@ -14,7 +14,7 @@ form p { line-height: 1.75em; }
     padding-right: 2.25em;
 }
 .size input { display: none; }
-.size input + .meatball {
+.size input + label .meatball {
     background-image: url(disabled.svg);
     background-repeat: no-repeat;
 
@@ -32,7 +32,7 @@ form p { line-height: 1.75em; }
     transition-timing-function: cubic-bezier(.33,.71,0,3.2);
     transition-duration: 200ms;
 }
-.size input:checked + .meatball {
+.size input:checked + label .meatball {
     background-image: url(enabled.svg);
 
     height: 0.75em;
