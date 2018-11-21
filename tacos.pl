@@ -1,14 +1,15 @@
 use Mojolicious::Lite;
 use Mojo::SQLite;
 
-app->plugin('Config');
-
 helper sizes => sub { 'M', 'L', 'L Mixte', 'XL', 'XXL', 'Giga' };
 helper sizes_prices => sub { (M => 7, L => 8, 'L Mixte' => 9, XL => 15, XXL => 23, Giga => 31) };
 helper sizes_max_meat => sub { my %max = (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 4, Giga => 5); $max{ $_[1] } };
 helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
 helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
 helper sauces => sub { 'Fromagère', 'Ketchup', 'Mayonnaise', 'Cocktail', 'Blanche', 'Barbecue', 'Américaine', 'Biggy burger', 'Tartare', 'Curry', 'Andalouse', 'Algérienne', 'Marocaine', 'Harissa', 'Samouraï', 'Poivre' };
+helper sauces_color => sub { my %color =('Fromagère' => 'f8e9b5', Ketchup => 'c83427', Mayonnaise => 'fff0af', Cocktail => 'e29460', Blanche => 'fff', Barbecue => '3a1a13', 'Américaine' => 'e5843b', 'Biggy burger'=> 'e9d07e', Tartare => 'e3e1d5', Curry => 'f7c748', Andalouse => 'c86815', 'Algérienne' => 'c58843', Marocaine => '75200d', Harissa => 'a00', 'Samouraï' => 'f0b175', Poivre => 'a68352'); $color{ $_[1] } };
+helper garnish_color_fill => sub { my %color =('Frites' => 'f1ed35', 'Cheddar'=> 'fceb4e', 'Gruyère'=> 'fffbc1', 'Salade'=> '77ff49', 'Tomate'=> 'ff583a', 'Oignons'=> 'dfe8b0', 'Carottes'=> 'f2b715', 'Cornichons'=> '86e87f'); $color{ $_[1] } };
+helper garnish_color_stroke => sub { my %color =('Frites' => 'e9cd00', 'Cheddar'=> 'ffd23f', 'Gruyère'=> 'f2ec9f', 'Salade'=> '20d302', 'Tomate'=> 'c61e00', 'Oignons'=> 'f7f7e1', 'Carottes'=> 'e89a00', 'Cornichons'=> '0eba01'); $color{ $_[1] } };
 helper price => sub { my %prices = shift->sizes_prices; $prices{ shift() } };
 
 helper sqlite => sub { state $sqlite = Mojo::SQLite->new('sqlite:tacos.db') };
@@ -62,8 +63,16 @@ get '/delete/:tacos_id' => sub {
 
 get '/whatsapp' => 'whatsapp';
 
+get '/inline/:img_file/:color' => sub {
+  my $c = shift;
+  $c->render(template =>$c->stash('img_file'),format => 'svg');};
+get '/inline/:img_file/:color1/:color2' => sub {
+  my $c = shift;
+  $c->render(template =>$c->stash('img_file'),format => 'svg');
+};
 app->defaults('message' => undef);
 app->start;
+
 
 __DATA__
 
@@ -136,10 +145,11 @@ Merci et bonne journée.</textarea>
     % foreach my $size (sizes()) {
       <span id="span-<%=$size%>" class="size tacosButton">
         %= radio_button size => $size, id => $size, required => 'required'
-        %= label_for $size => begin
+      	%= label_for $size => begin
           <%= $size %> (<%= sizes_max_meat($size) %> viandes, <%= price($size) %>.-)
-          <span class="meatball"></span>
+          <span class="decoButton"></span>
         %= end
+	        	
       </span>
     % }
   </p>
@@ -148,8 +158,11 @@ Merci et bonne journée.</textarea>
 
     % foreach my $meat (meats()) {
       <span id="span-<%=$meat%>" class="meat tacosButton">
-        %= label_for $meat => $meat
         %= check_box meat => $meat, id => $meat
+        %= label_for $meat => begin
+          <%= $meat %>
+          <span class="decoButton"></span>
+        %= end
       </span>
     % }
   </p>
@@ -158,8 +171,11 @@ Merci et bonne journée.</textarea>
 
     % foreach my $garnish (garnishes()) {
       <span id="span-<%=$garnish%>" class="garnish tacosButton">
-        %= label_for $garnish => $garnish
         %= check_box garnish => $garnish, id => $garnish
+        %= label_for $garnish => begin
+          <%= $garnish %>
+          <span class="decoButton" style='--sauceURL:url("inline/garnishEnabled/<%= garnish_color_fill($garnish) %>/<%= garnish_color_stroke($garnish) %>")'></span>
+        %= end
       </span>
     % }
   </p>
@@ -169,8 +185,11 @@ Merci et bonne journée.</textarea>
 
     % foreach my $sauce (sauces()) {
     <span id="span-<%=$sauce%>" class="sauce tacosButton">
-        %= label_for $sauce => $sauce
         %= check_box sauce => $sauce, id => $sauce
+        %= label_for $sauce => begin
+          <%= $sauce %>
+          <span class="decoButton" style='--sauceURL:url("inline/sauceEnabled/<%= sauces_color($sauce) %>")'></span>
+        %= end
       </span>
     % }
   </p>
@@ -193,6 +212,7 @@ let name = document.querySelector('#name')
 name.addEventListener('keyup', () => localStorage.name = name.value)
 name.value = localStorage.name || ''
 </script>
+<script src="Build/SetObjectCssVar.js"></script>
 
 @@ layouts/main.html.ep
 <!DOCTYPE html>

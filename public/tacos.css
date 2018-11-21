@@ -6,40 +6,92 @@ form p { line-height: 1.75em; }
     font-family: Arial;
     border-radius: 1em;
     filter: drop-shadow(0.1em 0.2em #0000004d);
-    position: relative;
+    padding-right: 2em;
+    position:relative;
 }
+
 .tacosButton.size {
     background-color: #dedede;
     font-weight: bold;
-    padding-right: 2.25em;
 }
-.size input { display: none; }
-.size input + label .meatball {
-    background-image: url(disabled.svg);
+.decoButton{
     background-repeat: no-repeat;
+    background-size: contain;
+
+    background-position: center;
 
     /* Need to be absolute to keep the container the same size */
     position: absolute;
-    bottom: 1px;
-    right: 0;
+    transition-property: right, top, height, filter;
+    filter: drop-shadow(0em 0em #0006);
+    transition-duration: 200ms;
+}
+.tacosButton > input:checked + label .decoButton {
+    filter: drop-shadow(0.1em 0.1em #0006);
+    transition-timing-function: cubic-bezier(.33,.71,0,3.2);
+    transition-duration: 400ms;
+}
 
+
+.tacosButton > input {
+    display: none;
+}
+.tacosButton > input + label{
+    cursor: pointer;
+}
+
+.sauce > input:checked + label .decoButton {
+    background-image: var(--sauceURL);
+    height: 0.8em;
+    top: -0.2em;
+}
+
+.sauce .decoButton {
+    background-image: url(disabled.svg);
     font-size: 2em;
     width: 1em;
     height: 0.6em;
-
-    filter: drop-shadow(0em 0em #0006);
-    transition-property: right, height, filter;
-    transition-timing-function: cubic-bezier(.33,.71,0,3.2);
-    transition-duration: 200ms;
+    top: 0.07em;
 }
-.size input:checked + label .meatball {
-    background-image: url(enabled.svg);
-
-    height: 0.75em;
-
-    filter: drop-shadow(0.1em 0.1em #0006);
+.size > input:checked + label .decoButton {
+    background-image: url(sizeEnabled.svg);
+    height: 0.8em;
+    top: -0.07em;
 }
+.size .decoButton {
+    background-image: url(sizeDisabled.svg); 
+    font-size: 2em;
+    width: 1em;
+    height: 0.6em;
+    top: 0.08em;
+}
+.garnish > input:checked + label .decoButton {
+    background-image: var(--sauceURL);
+    height: 0.8em;
+    top: -0.07em;
+}
+.garnish .decoButton {
+    background-image: url(garnishDisabled.svg); 
+    font-size: 2em;
+    width: 1em;
+    height: 0.6em;
+    top: 0.08em;
+}
+.meat > input:checked + label .decoButton {
+    background-image: url(meatEnabled.svg);
+    filter: none;
+    height: 0.72em;
+    top: -0.015em;
+}
+.meat .decoButton {
+    background-image: url(meatDisabled.svg); 
+    font-size: 2em;
+    width: 1em;
+    filter: none;
+    height: 0.7em;
 
-.tacosButton.meat { background-color: #ffa7a7; }
-.tacosButton.garnish { background-color: #c5e9ba; }
-.tacosButton.sauce { background-color: #f3df98; }
+    top: -0.01em;
+}
+.meat.tacosButton.meat { background-color: #ffa7a7; }
+.garnish.tacosButton.garnish { background-color: #c5e9ba; }
+.sauce.tacosButton.sauce { background-color: #f3df98; }
