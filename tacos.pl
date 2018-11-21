@@ -1,6 +1,8 @@
 use Mojolicious::Lite;
 use Mojo::SQLite;
 
+app->plugin('Config');
+
 helper sizes => sub { 'M', 'L', 'L Mixte', 'XL', 'XXL', 'Giga' };
 helper sizes_prices => sub { (M => 7, L => 8, 'L Mixte' => 9, XL => 15, XXL => 23, Giga => 31) };
 helper sizes_max_meat => sub { my %max = (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 4, Giga => 5); $max{ $_[1] } };
