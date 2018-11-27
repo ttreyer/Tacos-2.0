@@ -25,6 +25,7 @@ form p { line-height: 1.75em; }
     transition-property: right, top, height, filter;
     filter: drop-shadow(0em 0em #0006);
     transition-duration: 200ms;
+    right:0.1em;
 }
 .tacosButton > input:checked + label .decoButton {
     filter: drop-shadow(0.1em 0.1em #0006);
