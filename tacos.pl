@@ -65,10 +65,10 @@ get '/delete/:tacos_id' => sub {
 
 get '/whatsapp' => 'whatsapp';
 
-get '/inline/:img_file/:color' => sub {
+get '/inline/:img_file/<:color>.svg' => sub {
   my $c = shift;
   $c->render(template =>$c->stash('img_file'),format => 'svg');};
-get '/inline/:img_file/:color1/:color2' => sub {
+get '/inline/:img_file/:color1/<:color2>.svg' => sub {
   my $c = shift;
   $c->render(template =>$c->stash('img_file'),format => 'svg');
 };
@@ -176,7 +176,7 @@ Merci et bonne journée.</textarea>
         %= check_box garnish => $garnish, id => $garnish
         %= label_for $garnish => begin
           <%= $garnish %>
-          <span class="decoButton" style='--sauceURL:url("inline/garnishEnabled/<%= garnish_color_fill($garnish) %>/<%= garnish_color_stroke($garnish) %>")'></span>
+          <span class="decoButton" style='--sauceURL:url("inline/garnishEnabled/<%= garnish_color_fill($garnish) %>/<%= garnish_color_stroke($garnish) %>.svg")'></span>
         %= end
       </span>
     % }
@@ -190,7 +190,7 @@ Merci et bonne journée.</textarea>
         %= check_box sauce => $sauce, id => $sauce
         %= label_for $sauce => begin
           <%= $sauce %>
-          <span class="decoButton" style='--sauceURL:url("inline/sauceEnabled/<%= sauces_color($sauce) %>")'></span>
+          <span class="decoButton" style='--sauceURL:url("inline/sauceEnabled/<%= sauces_color($sauce) %>.svg")'></span>
         %= end
       </span>
     % }
@@ -214,7 +214,6 @@ let name = document.querySelector('#name')
 name.addEventListener('keyup', () => localStorage.name = name.value)
 name.value = localStorage.name || ''
 </script>
-<script src="Build/SetObjectCssVar.js"></script>
 
 @@ layouts/main.html.ep
 <!DOCTYPE html>
