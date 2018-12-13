@@ -42,7 +42,6 @@ form p { line-height: 1.75em; }
 }
 
 .sauce > input:checked + label .decoButton {
-    background-image: var(--sauceURL);
     height: 0.8em;
     top: -0.2em;
 }
@@ -67,7 +66,6 @@ form p { line-height: 1.75em; }
     top: 0.08em;
 }
 .garnish > input:checked + label .decoButton {
-    background-image: var(--sauceURL);
     height: 0.8em;
     top: -0.07em;
 }

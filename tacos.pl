@@ -166,7 +166,7 @@ Merci et bonne journée.</textarea>
         %= check_box garnish => $garnish, id => $garnish
         %= label_for $garnish => begin
           <%= $garnish %>
-          <span class="decoButton" style='--sauceURL:url("garnishEnabled-<%= $garnish %>.svg")'></span>
+          <span class="decoButton <%= $garnish %>"></span>
         %= end
       </span>
     % }
@@ -180,7 +180,7 @@ Merci et bonne journée.</textarea>
         %= check_box sauce => $sauce, id => $sauce
         %= label_for $sauce => begin
           <%= $sauce %>
-          <span class="decoButton" style='--sauceURL:url("sauceEnabled-<%= $sauce %>.svg")'></span>
+          <span class="decoButton <%= $sauce %>" ></span>
         %= end
       </span>
     % }
@@ -211,6 +211,14 @@ name.value = localStorage.name || ''
   <head>
     <title>Enforced modularity for TACOS</title>
 	<link type="text/css" rel="stylesheet" href="tacos.css"/>	
+    <style>
+      % foreach my $garnish (garnishes()) {
+        .tacosButton > input:checked + label .decoButton.<%= $garnish %> { background-image: url('garnishEnabled-<%= $garnish %>.svg'); }
+      % }
+      % foreach my $sauce (sauces()) {
+        .tacosButton > input:checked + label .decoButton.<%= $sauce %> { background-image: url('sauceEnabled-<%= $sauce %>.svg'); }
+      % }
+    </style>
     <meta charset="utf-8">
   </head>
   <body>
