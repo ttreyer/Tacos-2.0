@@ -210,13 +210,13 @@ name.value = localStorage.name || ''
 <html>
   <head>
     <title>Enforced modularity for TACOS</title>
-	<link type="text/css" rel="stylesheet" href="tacos.css"/>	
+    <link type="text/css" rel="stylesheet" href="tacos.css"/>
     <style>
       % foreach my $garnish (garnishes()) {
         .tacosButton > input:checked + label .decoButton.<%= $garnish %> { background-image: url('garnishEnabled-<%= $garnish %>.svg'); }
       % }
       % foreach my $sauce (sauces()) {
-        .tacosButton > input:checked + label .decoButton.<%= $sauce %> { background-image: url('sauceEnabled-<%= $sauce %>.svg'); }
+        .tacosButton > input:checked + label .decoButton.<%= $sauce =~ tr/ /./r %> { background-image: url('sauceEnabled-<%= $sauce %>.svg'); }
       % }
     </style>
     <meta charset="utf-8">
