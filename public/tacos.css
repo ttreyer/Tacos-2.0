@@ -139,6 +139,10 @@ form p { line-height: 1.75em; }
         -webkit-appearance: none;
         width: 100%;
     }
+    input[type="submit"]{
+        line-height: 2em;
+        font-weight: bold;
+    }
      .tacosButton{
         margin-top: 0.1em;
         
