@@ -221,6 +221,8 @@ name.value = localStorage.name || ''
 <html>
   <head>
     <title>Enforced modularity for TACOS</title>
+    <link rel="shortcut icon" href="/icons/icon-16.png" type="image/x-icon">
+    <link rel="manifest" href="tacos.webmanifest">
 	<link type="text/css" rel="stylesheet" href="tacos.css"/>	
     <meta charset="utf-8">
   </head>
