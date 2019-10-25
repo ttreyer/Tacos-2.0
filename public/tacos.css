@@ -99,6 +99,7 @@ form p { line-height: 1.75em; }
 }
 /* Phone css*/
 @media all and (max-aspect-ratio: 4/5){
+    * { box-sizing: border-box; }
     h1+p > img {
         display: none;
     }
@@ -112,25 +113,35 @@ form p { line-height: 1.75em; }
         font-size: 1.2em;
     }
     form p:not(:first-child) span{
-        font-size: 0.833em;
+        font-size: 0.6em;
     }
-    form {
-        
-        font-size: 5vh;
-    }
+    form { font-size: 4em; }
+    form p { margin: .75em 0; }
     .decoButton{
         transform: translateY(0.2em) scale(1.3);
     }
+    .size .decoButton { top: .2em; }
+    .size > input:checked + label .decoButton { top: .05em; }
+    .meat .decoButton { top: .12em; }
+    .meat > input:checked + label .decoButton { top: .115em; }
+    .garnish .decoButton { top: .14em; }
+    .garnish > input:checked + label .decoButton { top: 0; }
+    .sauce .decoButton { top: .22em; }
+    .sauce > input:checked + label .decoButton { top: .05em; right: .2em; }
     h2{
-        font-size: 5vh;
+        font-size: 4em;
         font-family: Arial;
     }
     input[type="submit"],[type="text"]{
-        font-size: 5vh;
+        font-size: 1em;
         -moz-appearance: none;
         appearance: none;
         -webkit-appearance: none;
         width: 100%;
+    }
+    input[type="submit"]{
+        line-height: 2em;
+        font-weight: bold;
     }
      .tacosButton{
         margin-top: 0.1em;
@@ -138,7 +149,7 @@ form p { line-height: 1.75em; }
         height: auto;
     }
     .tacosButton > label{
-        padding: 0.3em 0em 0.3em 0.5em;
+        padding: 0 0 0 0.5em;
         width: 100%;
         display: block;
     }
