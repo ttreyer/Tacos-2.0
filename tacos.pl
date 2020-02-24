@@ -1,5 +1,6 @@
 use Mojolicious::Lite;
 use Mojo::SQLite;
+use POSIX qw(strftime);
 
 app->plugin('Config');
 
@@ -22,6 +23,10 @@ create table tacos (id integer primary key autoincrement, hashtag_id integer, na
 -- 1 down
 drop table hashtags;
 drop table tacos;
+-- 2 up
+alter table hashtags add column created_at datetime default 0;
+alter table tacos add column created_at datetime default 0;
+-- 2 down
 SQL
 
 get '/' => 'form';
@@ -35,6 +40,7 @@ post '/' => sub {
     meat => join(', ', @{ $c->every_param('meat') }),
     garnish => join(', ', @{ $c->every_param('garnish') }),
     sauce => join(', ', @{ $c->every_param('sauce') }),
+    created_at => strftime('%F %X', localtime),
   };
 
   my $max_meat_count = $c->sizes_max_meat($tacos->{size});
@@ -48,7 +54,7 @@ post '/' => sub {
 get '/hashtag' => 'hashtag';
 post '/hashtag' => sub {
   my $c = shift;
-  $c->sqlite->db->insert('hashtags', { name => $c->param('hashtag') });
+  $c->sqlite->db->insert('hashtags', { name => $c->param('hashtag'), created_at => strftime('%F %X', localtime) });
   return $c->render('hashtag', message => 'Nouvelle commande!');
 };
 
@@ -125,6 +131,7 @@ Merci et bonne journée.</textarea>
 </p>
 
 <h2><%= $hashtag->{name} %></h2>
+<h3><%= $hashtag->{created_at} %></h3>
 
 %= form_for '/' => (method => 'POST') => begin
   <p>
