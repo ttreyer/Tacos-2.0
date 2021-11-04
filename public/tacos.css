@@ -3,8 +3,8 @@
 }
 
 .tacospin {
-    width: 30vw;
-    height: 30vw;
+    width: min(45vh, 30vw);
+    height: min(45vh, 30vw);
 }
 
 form p { line-height: 1.75em; }
@@ -109,12 +109,14 @@ form p { line-height: 1.75em; }
 /* Phone css*/
 @media all and (max-aspect-ratio: 4/5){
     * { box-sizing: border-box; }
-    h1+p > img {
+    .tacospin {
         display: none;
     }
-     h1+p > img:first-child {
+    .tacospin:first-child {
         display: inherit;
-         width : 100%;
+        width : 100vw;
+        height: 100vw;
+        margin: 0 -8px 0 -8px;
     }
     form p:not(:first-child){
         display: flex;
