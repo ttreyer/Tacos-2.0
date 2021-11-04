@@ -233,7 +233,7 @@ name.value = localStorage.name || ''
   </head>
   <body>
     <h1>Mmmh TACOS</h1>
-    <%== ($message) ? "<h2>$message</h2>" : undef %>
+    <h2><%== $message || "&nbsp;" %></h2>
     <%= content %>
     <p><a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a></p>
   </body>
