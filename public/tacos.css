@@ -1,3 +1,7 @@
+:root {
+  color-scheme: light dark; /* both supported */
+}
+
 .tacospin {
     width: 30vw;
     height: 30vw;
@@ -162,3 +166,30 @@ form p { line-height: 1.75em; }
 .meat.tacosButton.meat { background-color: #ffa7a7; }
 .garnish.tacosButton.garnish { background-color: #c5e9ba; }
 .sauce.tacosButton.sauce { background-color: #f3df98; }
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        background: #0a0110;
+        color: #efefef;
+    }
+
+    .tacosButton.size { background: #929292; }
+    .meat.tacosButton.meat { background: #B37474; }
+    .garnish.tacosButton.garnish { background: #849C7C; }
+    .sauce.tacosButton.sauce { background: #A69868; }
+
+    input, textarea {
+        background: #2F2933;
+        color: #efefef;
+        border: inset #262129;
+    }
+
+    input[type="submit"] { border: outset #262129; }
+
+    a { color: lightblue; }
+    a:hover { color: lightskyblue }
+    a:active { color: lightskyblue; }
+    a:visited { color: plum; }
+    a:visited:hover { color: palevioletred; }
+    a:visited:active { color: pink; }
+}

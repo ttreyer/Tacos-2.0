@@ -219,7 +219,8 @@ name.value = localStorage.name || ''
     <title>Enforced modularity for TACOS</title>
     <link rel="shortcut icon" href="/icons/icon-16.png" type="image/x-icon">
     <link rel="manifest" href="tacos.webmanifest">
-    <link type="text/css" rel="stylesheet" href="tacos.css"/>
+    <link type="text/css" rel="stylesheet" href="tacos.css">
+    <meta name="color-scheme" content="dark light">
     <style>
       % foreach my $garnish (garnishes()) {
         .tacosButton > input:checked + label .decoButton.<%= $garnish %> { background-image: url('garnishEnabled-<%= $garnish %>.svg'); }
