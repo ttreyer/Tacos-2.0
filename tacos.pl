@@ -235,6 +235,6 @@ name.value = localStorage.name || ''
     <h1>Mmmh TACOS</h1>
     <h2><%== $message || "&nbsp;" %></h2>
     <%= content %>
-    <p><a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a></p>
+    <p><a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a> | <a href="https://github.com/ttreyer/Tacos-2.0/issues">Feetback/Contributions</a></p>
   </body>
 </html>
