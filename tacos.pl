@@ -232,9 +232,46 @@ name.value = localStorage.name || ''
     <meta charset="utf-8">
   </head>
   <body>
-    <h1>Mmmh TACOS</h1>
+    <script>
+        let getInitialColorMode = () => {
+            const persistedColorPreference = window.localStorage.getItem('color-mode')
+            const hasPersistedPreference = typeof persistedColorPreference === 'string'
+
+            if (hasPersistedPreference)
+                return persistedColorPreference
+
+            const mql = window.matchMedia('(prefers-color-scheme: dark)')
+            const hasMediaQueryPreference = typeof mql.matches === 'boolean'
+
+            if (hasMediaQueryPreference)
+                return mql.matches ? 'dark' : 'light'
+
+            return 'light'
+        }
+
+        const colorMode = getInitialColorMode()
+        const body = document.querySelector('body')
+        body.classList.add(colorMode)
+    </script>
+
+    <h1>Mmmh TACOS <button id="btn-color-mode"></button></h1>
     <h2><%== $message || "&nbsp;" %></h2>
     <%= content %>
     <p><a href="/">Home</a> | <a href="/hashtag">Nouvelle commande</a> | <a href="/whatsapp">Message WhatsApp</a> | <a href="https://github.com/ttreyer/Tacos-2.0/issues">Feetback/Contributions</a></p>
+
+
+    <script>
+        let toggleColorMode = () => {
+            const currentColorMode = getInitialColorMode()
+            const invertColorMode = currentColorMode === 'light' ? 'dark' : 'light'
+
+            window.localStorage.setItem('color-mode', invertColorMode)
+            body.classList.remove(currentColorMode)
+            body.classList.add(invertColorMode)
+        }
+
+        document.querySelector('#btn-color-mode')
+                .addEventListener('click', toggleColorMode)
+    </script>
   </body>
 </html>

@@ -22,7 +22,7 @@ body.light {
   --link-visited-active-color: revert;
   --input-bg-color: revert;
   --input-border-color: revert;
-  --button-content: "🌑 Dark mode";
+  --button-content: "Dark mode 🌑";
 }
 
 body.dark {
@@ -40,7 +40,7 @@ body.dark {
   --link-visited-active-color: pink;
   --input-bg-color: #2f2933;
   --input-border-color: #262129;
-  --button-content: "🌕 Light mode";
+  --button-content: "Light mode 🌕";
 }
 
 body {
@@ -71,6 +71,20 @@ body.dark input, body.dark textarea {
 
 body.dark input[type="submit"] {
     border: outset var(--input-border-color);
+}
+
+#btn-color-mode {
+  font-size: 100%;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: var(--chart-text-color);
+  background-color: transparent;
+  border: 0;
+  float: right;
+}
+
+#btn-color-mode:after {
+  content: var(--button-content);
 }
 
 .tacospin {
