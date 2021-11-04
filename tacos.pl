@@ -109,9 +109,9 @@ Merci et bonne journée.</textarea>
 <h2 style="color:red">!!! en envoyant un hashtag, tu démarres une toute nouvelle commande !!!</h2>
 
 <p>
-  <img width="30%" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
-  <img width="30%" src="https://media.giphy.com/media/lDpFBflBkkxfq/giphy.gif">
-  <img width="30%" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
+  <img class="tacospin" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
+  <img class="tacospin" src="https://media.giphy.com/media/lDpFBflBkkxfq/giphy.gif">
+  <img class="tacospin" src="https://media.giphy.com/media/3xz2BxlT8yngXMEX4Y/giphy.gif">
 </p>
 
 <form method="post" action="/hashtag">
@@ -125,9 +125,9 @@ Merci et bonne journée.</textarea>
 % my $hashtag = hashtag();
 
 <p>
-  <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
-  <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
-  <img width="30%" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
+  <img class="tacospin" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
+  <img class="tacospin" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
+  <img class="tacospin" src="https://media.giphy.com/media/7if9hGmIHjrTG/giphy.gif">
 </p>
 
 <h2><%= $hashtag->{name} %></h2>

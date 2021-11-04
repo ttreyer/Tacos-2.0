@@ -1,3 +1,8 @@
+.tacospin {
+    width: 30vw;
+    height: 30vw;
+}
+
 form p { line-height: 1.75em; }
 .tacosButton {
     display: inline-block;
