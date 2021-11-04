@@ -2,6 +2,77 @@
   color-scheme: light dark; /* both supported */
 }
 
+body,
+body.light {
+  --bg-color: white;
+  --text-color: black;
+  --tacos-size-bg-color: #dedede;
+  --tacos-meat-bg-color: #ffa7a7;
+  --tacos-garnish-bg-color: #c5e9ba;
+  --tacos-sauce-bg-color: #f3df98;
+  /* No way to reset link colors to default :(
+   * Same for borders
+   * These are just placeholder for now.
+   * Therefore, links color is only set for dark mode */
+  --link-color: revert;
+  --link-hover-color: revert;
+  --link-active-color: revert;
+  --link-visited-color: revert;
+  --link-visited-hover-color: revert;
+  --link-visited-active-color: revert;
+  --input-bg-color: revert;
+  --input-border-color: revert;
+  --button-content: "🌑 Dark mode";
+}
+
+body.dark {
+  --bg-color: #0a0110;
+  --text-color: #efefef;
+  --tacos-size-bg-color: #929292;
+  --tacos-meat-bg-color: #b37474;
+  --tacos-garnish-bg-color: #849c7c;
+  --tacos-sauce-bg-color: #a69868;
+  --link-color: lightblue;
+  --link-hover-color: lightskyblue;
+  --link-active-color: lightsteelblue;
+  --link-visited-color: plum;
+  --link-visited-hover-color: palevioletred;
+  --link-visited-active-color: pink;
+  --input-bg-color: #2f2933;
+  --input-border-color: #262129;
+  --button-content: "🌕 Light mode";
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.sizes .tacosButton.size { background: var(--tacos-size-bg-color); }
+.meats .tacosButton.meat { background: var(--tacos-meat-bg-color); }
+.garnishes .tacosButton.garnish { background: var(--tacos-garnish-bg-color); }
+.sauces .tacosButton.sauce { background: var(--tacos-sauce-bg-color); }
+
+body.dark a { color: var(--link-color); }
+body.dark a:hover { color: var(--link-hover-color) }
+body.dark a:active { color: var(--link-active-color); }
+body.dark a:visited { color: var(--link-visited-color); }
+body.dark a:visited:hover { color: var(--link-visited-hover-color); }
+body.dark a:visited:active { color: var(--link-visited-active-color); }
+
+input, textarea {
+    background: var(--input-bg-color);
+    color: var(--text-color);
+}
+
+body.dark input, body.dark textarea {
+    border: inset var(--input-border-color);
+}
+
+body.dark input[type="submit"] {
+    border: outset var(--input-border-color);
+}
+
 .tacospin {
     width: min(45vh, 30vw);
     height: min(45vh, 30vw);
@@ -10,15 +81,13 @@
 form p { line-height: 1.75em; }
 .tacosButton {
     display: inline-block;
-    font-family: Arial;
+    font-family: sans-serif;
     position:relative;
 }
 
 .tacosButton.size {
-    background-color: #dedede;
     font-weight: bold;
 }
-
 
 .decoButton{
     background-repeat: no-repeat;
@@ -141,7 +210,7 @@ form p { line-height: 1.75em; }
     .sauce > input:checked + label .decoButton { top: .05em; right: .2em; }
     h2{
         font-size: 4em;
-        font-family: Arial;
+        font-family: sans-serif;
     }
     input[type="submit"],[type="text"]{
         font-size: 1em;
@@ -164,34 +233,4 @@ form p { line-height: 1.75em; }
         width: 100%;
         display: block;
     }
-}
-.meat.tacosButton.meat { background-color: #ffa7a7; }
-.garnish.tacosButton.garnish { background-color: #c5e9ba; }
-.sauce.tacosButton.sauce { background-color: #f3df98; }
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        background: #0a0110;
-        color: #efefef;
-    }
-
-    .tacosButton.size { background: #929292; }
-    .meat.tacosButton.meat { background: #B37474; }
-    .garnish.tacosButton.garnish { background: #849C7C; }
-    .sauce.tacosButton.sauce { background: #A69868; }
-
-    input, textarea {
-        background: #2F2933;
-        color: #efefef;
-        border: inset #262129;
-    }
-
-    input[type="submit"] { border: outset #262129; }
-
-    a { color: lightblue; }
-    a:hover { color: lightskyblue }
-    a:active { color: lightskyblue; }
-    a:visited { color: plum; }
-    a:visited:hover { color: palevioletred; }
-    a:visited:active { color: pink; }
 }
