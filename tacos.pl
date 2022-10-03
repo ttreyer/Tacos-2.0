@@ -5,7 +5,7 @@ use POSIX qw(strftime);
 app->plugin('Config');
 
 helper sizes => sub { 'M', 'L', 'L Mixte', 'XL', 'XXL', 'Giga' };
-helper sizes_prices => sub { (M => 7, L => 8, 'L Mixte' => 9, XL => 15, XXL => 23, Giga => 31) };
+helper sizes_prices => sub { (M => 8, L => 9, 'L Mixte' => 10, XL => 16, XXL => 24, Giga => 32) };
 helper sizes_max_meat => sub { my %max = (M => 1, L => 1, 'L Mixte' => 3, XL => 3, XXL => 4, Giga => 5); $max{ $_[1] } };
 helper meats => sub { 'Viande hachée', 'Escalope de poulet', 'Cordon bleu', 'Merguez', 'Nuggets', 'Kebab', 'Soudjouk', 'Végétarien' };
 helper garnishes => sub { 'Frites', 'Cheddar', 'Gruyère', 'Salade', 'Tomate', 'Oignons', 'Carottes', 'Cornichons' };
